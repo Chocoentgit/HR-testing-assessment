@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>热带水果工作风格测评</title>
+<style>
+:root{
+  --ink:#1c2a25;
+  --ink-soft:#54655e;
+  --paper:#f7f6f1;
+  --card:#ffffff;
+  --line:#e3e1d7;
+  --palm:#19564a;
+  --palm-deep:#0e3f36;
+  --d:#c9971f;   /* 榴莲 金 */
+  --d-bg:#fbf3dd;
+  --h:#e0356e;   /* 火龙果 洋红 */
+  --h-bg:#fde9f0;
+  --p:#6d4fc0;   /* 百香果 紫 */
+  --p-bg:#efeafa;
+  --y:#5a9b2e;   /* 杨桃 黄绿 */
+  --y-bg:#edf6e2;
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  background:var(--paper);color:var(--ink);line-height:1.65;
+  min-height:100vh;
+}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px}
+a{color:var(--palm)}
+button{font-family:inherit;cursor:pointer}
+
+/* ---------- 顶部 ---------- */
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.brand .mark{
+  width:42px;height:42px;border-radius:12px;background:var(--palm-deep);
+  display:flex;align-items:center;justify-content:center;flex:none;
+}
+.brand .mark svg{display:block}
+.brand .t1{font-size:17px;font-weight:700;letter-spacing:.02em}
+.brand .t2{font-size:12px;color:var(--ink-soft);letter-spacing:.14em}
+
+/* ---------- 卡片 ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:0 1px 3px rgba(28,42,37,.04)}
+.card + .card{margin-top:16px}
+h1{font-size:26px;line-height:1.35;font-weight:800;letter-spacing:.01em}
+h2{font-size:18px;font-weight:700;margin-bottom:12px}
+.sub{color:var(--ink-soft);font-size:14px;margin-top:8px}
+
+.fruitline{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
+.chip{font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:99px;border:1px solid transparent}
+.chip.d{background:var(--d-bg);color:#8a6610;border-color:#ecd9a4}
+.chip.h{background:var(--h-bg);color:#a91f4e;border-color:#f6c2d4}
+.chip.p{background:var(--p-bg);color:#4f3596;border-color:#d6c9f1}
+.chip.y{background:var(--y-bg);color:#3f6e1d;border-color:#cfe5b3}
+
+/* ---------- 表单 ---------- */
+.field{margin-top:16px}
+.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px;color:var(--ink)}
+.field input,.field select,.field textarea{
+  width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;
+  font-size:15px;font-family:inherit;background:#fff;color:var(--ink);
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--palm);outline-offset:1px;border-color:var(--palm)}
+.hint{font-size:12.5px;color:var(--ink-soft);margin-top:5px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--palm-deep);color:#fff;border:none;border-radius:10px;
+  padding:13px 26px;font-size:15px;font-weight:700;letter-spacing:.03em;
+  transition:background .15s;
+}
+.btn:hover{background:var(--palm)}
+.btn.full{width:100%;margin-top:24px}
+.btn.ghost{background:#fff;color:var(--palm-deep);border:1.5px solid var(--palm-deep)}
+.btn.ghost:hover{background:#f0f4f2}
+.btn.small{padding:8px 16px;font-size:13px;border-radius:8px}
+.btn.danger{background:#fff;color:#b3372f;border:1.5px solid #d9a09b}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* ---------- 答题 ---------- */
+.progress{height:7px;background:#e9e7dd;border-radius:99px;overflow:hidden;margin:6px 0 22px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--palm),var(--y));border-radius:99px;transition:width .25s}
+.qmeta{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);font-weight:600}
+.qtext{font-size:19px;font-weight:700;line-height:1.5;margin:14px 0 20px}
+.qtag{display:inline-block;font-size:11.5px;font-weight:700;color:var(--palm);background:#e7f0ec;border-radius:6px;padding:2px 8px;margin-bottom:10px;letter-spacing:.05em}
+.opt{
+  display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);
+  border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.55;margin-top:10px;
+  transition:border-color .12s, background .12s;color:var(--ink);
+}
+.opt:hover{border-color:var(--palm);background:#f4f8f6}
+.opt.sel{border-color:var(--palm-deep);background:#e7f0ec;font-weight:600}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.qnav .back{background:none;border:none;color:var(--ink-soft);font-size:14px;font-weight:600;padding:8px}
+.qnav .back:hover{color:var(--ink)}
+
+/* ---------- 提交完成 ---------- */
+.donewrap{text-align:center;padding:30px 10px}
+.donemark{
+  width:74px;height:74px;border-radius:50%;background:var(--y-bg);border:2px solid var(--y);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:34px;color:var(--y);
+}
+details.codebox{margin-top:30px;text-align:left;border-top:1px dashed var(--line);padding-top:14px}
+details.codebox summary{font-size:12.5px;color:#a9a596;cursor:pointer;list-style:none}
+details.codebox summary::-webkit-details-marker{display:none}
+.codeval{
+  margin-top:10px;background:#f2f1ea;border:1px solid var(--line);border-radius:8px;
+  padding:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;word-break:break-all;color:var(--ink-soft);
+}
+
+/* ---------- HR ---------- */
+.hrbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.toolrow{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.toolrow input,.toolrow select{padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;font-family:inherit;background:#fff}
+.toolrow input[type=text]{flex:1;min-width:160px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:.04em;border-bottom:2px solid var(--line);padding:8px 8px}
+td{border-bottom:1px solid var(--line);padding:10px 8px;vertical-align:middle}
+tr:hover td{background:#fafaf5}
+.stylecell{display:flex;align-items:center;gap:6px;font-weight:600}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.dot.D{background:var(--d)}.dot.H{background:var(--h)}.dot.P{background:var(--p)}.dot.Y{background:var(--y)}
+.badge{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.badge.strong{background:#dff0e3;color:#1f6b3a}
+.badge.mid{background:#fbf3dd;color:#8a6610}
+.badge.low{background:#fdecea;color:#b3372f}
+.empty{text-align:center;color:var(--ink-soft);padding:40px 0;font-size:14px}
+.linkbtn{background:none;border:none;color:var(--palm);font-weight:700;font-size:13px;padding:4px;text-decoration:underline}
+.linkbtn.red{color:#b3372f}
+
+/* ---------- 报告 ---------- */
+.rpt-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start;border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:18px}
+.rpt-head h1{font-size:22px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.kv .k{font-size:11.5px;color:var(--ink-soft);font-weight:700;letter-spacing:.05em}
+.kv .v{font-size:14.5px;font-weight:600;margin-top:2px}
+.mainstyle{display:flex;gap:14px;align-items:center;padding:16px;border-radius:12px;margin:14px 0}
+.mainstyle.D{background:var(--d-bg)}.mainstyle.H{background:var(--h-bg)}.mainstyle.P{background:var(--p-bg)}.mainstyle.Y{background:var(--y-bg)}
+.fruiticon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;flex:none}
+.fruiticon.D{background:var(--d)}.fruiticon.H{background:var(--h)}.fruiticon.P{background:var(--p)}.fruiticon.Y{background:var(--y)}
+.distbar{display:flex;height:16px;border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.distbar i{display:block;height:100%}
+.distlegend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-bottom:6px}
+.distlegend b{color:var(--ink)}
+.rsec{margin-top:20px;border-top:1px solid var(--line);padding-top:16px}
+.rsec h3{font-size:14.5px;font-weight:800;letter-spacing:.03em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.rsec h3::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--palm)}
+.rsec ul{padding-left:20px}
+.rsec li{margin:5px 0;font-size:14px}
+.matchgrid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}
+.matchrow{display:grid;grid-template-columns:150px 1fr 56px;align-items:center;gap:12px;font-size:13.5px}
+.matchrow .bar{height:10px;background:#eceadf;border-radius:99px;overflow:hidden}
+.matchrow .bar i{display:block;height:100%;background:var(--palm);border-radius:99px}
+.matchrow.hl .bar i{background:var(--d)}
+.matchrow .sc{font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.matchrow .nm{font-weight:600}
+.matchrow.hl .nm::after{content:" ★应聘岗位";font-size:11px;color:#8a6610;font-weight:700}
+.notice{font-size:12.5px;color:var(--ink-soft);background:#f2f1ea;border-radius:8px;padding:10px 14px;margin-top:18px}
+.rpt-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+
+/* ---------- footer / 入口 ---------- */
+.foot{margin-top:46px;text-align:center;font-size:12px;color:#b6b2a3}
+.foot button{background:none;border:none;color:#b6b2a3;font-size:12px;text-decoration:underline;padding:4px}
+.foot button:hover{color:var(--ink-soft)}
+
+.toast{
+  position:fixed;left:50%;bottom:34px;transform:translateX(-50%);
+  background:var(--ink);color:#fff;font-size:13.5px;padding:10px 20px;border-radius:99px;
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:99;
+}
+.toast.show{opacity:1}
+
+@media (max-width:600px){
+  .card{padding:22px 18px}
+  h1{font-size:22px}
+  .qtext{font-size:17px}
+  .matchrow{grid-template-columns:110px 1fr 48px}
+  .hidemobile{display:none}
+}
+
+/* ---------- 打印 ---------- */
+@media print{
+  body{background:#fff}
+  .wrap{max-width:100%;padding:0}
+  .brand,.rpt-actions,.foot,.toast,.noprint{display:none !important}
+  .card{border:none;box-shadow:none;padding:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand noprint">
+    <div class="mark">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M12 3c-4 3-7 6.5-7 11a7 7 0 0 0 14 0c0-4.5-3-8-7-11Z" stroke="#fff" stroke-width="1.6"/>
+        <path d="M12 8v9M9.5 11.5 12 14l2.5-2.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="t1">热带水果工作风格测评</div>
+      <div class="t2">TROPICAL WORKSTYLE ASSESSMENT</div>
+    </div>
+  </div>
+  <div id="app"></div>
+  <div class="foot noprint">
+    本测评为公司内部招聘辅助工具，不构成心理诊断 ·
+    <button onclick="App.gotoHR()">内部入口</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   配置
+========================================================= */
+/* =========================================================
+   ★ 部署配置：只需修改下面两行（见《上线操作清单》）
+========================================================= */
+const SUPABASE_URL      = "https://YOUR-PROJECT-ID.supabase.co";  // ← Supabase 项目 URL
+const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";                 // ← Supabase anon public key
+
+/* =========================================================
+   Supabase 数据层：候选人匿名提交入库，HR 登录后查看
+========================================================= */
+let HR_TOKEN=null;
+function sbHeaders(auth){
+  const h={"apikey":SUPABASE_ANON_KEY,"Content-Type":"application/json"};
+  if(auth&&HR_TOKEN)h["Authorization"]="Bearer "+HR_TOKEN;
+  return h;
+}
+const Cloud = {
+  cache:[],
+  configured(){ return SUPABASE_URL.indexOf("YOUR-")<0 && SUPABASE_ANON_KEY.indexOf("YOUR-")<0 },
+  async add(rec){
+    if(!Cloud.configured()) throw new Error("系统尚未完成配置");
+    const r=await fetch(SUPABASE_URL+"/rest/v1/submissions",{
+      method:"POST",
+      headers:{...sbHeaders(true),"Prefer":"return=minimal"},
+      body:JSON.stringify({id:rec.id,name:rec.name,contact:rec.contact,job:rec.job,ts:rec.ts,answers:rec.answers})
+    });
+    if(!r.ok) throw new Error("保存失败("+r.status+")");
+    Cloud.cache=Cloud.cache.filter(x=>x.id!==rec.id); Cloud.cache.unshift(rec);
+  },
+  async login(email,pwd){
+    if(!Cloud.configured()) throw new Error("系统尚未完成配置");
+    const r=await fetch(SUPABASE_URL+"/auth/v1/token?grant_type=password",{
+      method:"POST",headers:sbHeaders(false),body:JSON.stringify({email,password:pwd})
+    });
+    if(!r.ok) throw new Error("邮箱或密码不正确");
+    const d=await r.json(); HR_TOKEN=d.access_token;
+  },
+  async loadAll(){
+    const r=await fetch(SUPABASE_URL+"/rest/v1/submissions?select=*&order=ts.desc&limit=1000",{headers:sbHeaders(true)});
+    if(!r.ok) throw new Error("数据加载失败("+r.status+")，请重新登录");
+    const rows=await r.json();
+    Cloud.cache=rows.filter(x=>Array.isArray(x.answers)&&x.answers.length===QUESTIONS.length);
+    return Cloud.cache;
+  },
+  async remove(id){
+    await fetch(SUPABASE_URL+"/rest/v1/submissions?id=eq."+encodeURIComponent(id),{method:"DELETE",headers:sbHeaders(true)});
+    Cloud.cache=Cloud.cache.filter(x=>x.id!==id);
+  }
+};
+
+/* =========================================================
+   四种水果定义
+========================================================= */
+const FRUITS = {
+  D:{name:"榴莲型",  en:"DURIAN",  key:"目标推进", color:"var(--d)", icon:"榴",
+     tagline:"推进强、目标感强、敢决策",
+     desc:"以结果为导向，节奏快、敢拍板，遇到阻力倾向正面解决。在压力和混乱中往往是把事情往前推的人。",
+     strengths:["目标感强，能快速明确优先级并推动落地","决策果断，敢于承担责任、正面处理冲突","抗压性好，越是关键节点越能集中火力","对结果和数字敏感，天然关注产出与回报"],
+     risks:["可能过于强势，压制团队或客户的不同意见","追求速度时容易忽略细节与流程合规","对节奏慢的同事缺乏耐心，协作摩擦偏高","可能先行动后对齐，造成方向性返工"],
+     interview:["请举一个你顶着压力推动项目落地的具体例子，当时有哪些反对声音？你怎么处理的？","有没有一次你的决策事后被证明是错的？你是怎么发现并纠正的？","当客户或上级与你判断不一致时，你最近一次让步是什么情况？"],
+     probation:["是否能在强推进的同时听取团队与客户反馈","重要决策前是否会主动对齐关键相关方","对细节与交付质量的把控是否达标"],
+     manage:["给清晰目标和授权空间，避免过度过程管控","重要事项要求'先对齐再开跑'，设置决策检查点","搭配细节型/协作型同事互补，明确分工边界"]},
+  H:{name:"火龙果型", en:"DRAGON FRUIT", key:"表达创意", color:"var(--h)", icon:"火",
+     tagline:"表达强、创意感强、外向感染力",
+     desc:"善于表达和感染他人，点子多、对趋势敏感，能快速建立关系、带动氛围，是团队的能量来源和对外名片。",
+     strengths:["表达与感染力强，适合对外沟通、提案与传播","创意活跃，能持续产出新想法与新角度","建立关系快，能迅速融入团队与客户场景","乐观能量足，在士气低谷时能带动团队"],
+     risks:["想法多但落地与收尾能力需要验证","对重复性、细节性工作耐受度可能偏低","时间与承诺管理可能松散，答应多兑现少","情绪驱动明显，状态起伏影响稳定输出"],
+     interview:["请讲一个你的创意从想法到最终上线/交付的完整过程，中间最难的落地环节是什么？","你如何管理同时进行的多个任务？最近一次延期是什么原因？","当一项工作枯燥但必须做时，你的真实做法是什么？请举例。"],
+     probation:["创意是否能转化为按时、合格的交付物","细节与执行收尾的完成度","承诺事项的兑现率与时间管理"],
+     manage:["给舞台与认可，把对外表达类任务交给Ta","用清单和节点管理对冲落地风险，定期核对承诺","重要交付搭配执行型同事兜底，明确DDL与验收标准"]},
+  P:{name:"百香果型", en:"PASSION FRUIT", key:"思考结构", color:"var(--p)", icon:"百",
+     tagline:"思考强、结构感强、内容深度较好",
+     desc:"善于分析与结构化思考，重逻辑、重依据，输出有深度。在复杂问题、方案设计和质量把控上价值突出。",
+     strengths:["分析与结构化能力强，能把复杂问题拆解清楚","重事实和逻辑，方案质量与严谨度高","独立钻研能力强，适合深度型、专业型工作","对风险敏感，能提前发现方案漏洞"],
+     risks:["可能过度分析、行动偏慢，错过时间窗口","完美主义倾向，在'够用'与'最优'间纠结","对外表达和向上沟通的主动性可能不足","对模糊、快变的环境适应需要观察"],
+     interview:["请举一个你在信息不全、时间紧的情况下快速做出判断的例子，你舍弃了什么？","你最近一次把复杂分析讲给非专业听众，效果如何？怎么调整的？","有没有一个项目你准备很充分但结果不理想？你的复盘结论是什么？"],
+     probation:["能否在限定时间内输出'可用'而非'完美'的成果","主动同步进度与向上沟通的频率","想法到可交付成果的转化速度"],
+     manage:["给明确的时间盒和'完成定义'，防止无限打磨","重要分析给足独立工作时间，减少频繁打断","鼓励阶段性输出与公开表达，搭配推进型同事提速"]},
+  Y:{name:"杨桃型",  en:"STAR FRUIT", key:"协作服务", color:"var(--y)", icon:"杨",
+     tagline:"协作强、服务感强、稳定耐心",
+     desc:"稳定、耐心、可靠，关注他人需求与团队和谐，是团队的粘合剂。在服务、协调和持续性工作上表现稳定。",
+     strengths:["协作与服务意识强，跨方沟通顺畅","稳定可靠，持续性和重复性工作质量稳","耐心倾听，能感知团队与客户的真实情绪","忠诚度高，是团队的稳定器与粘合剂"],
+     risks:["可能回避冲突，不敢明确说'不'或提出异议","主动推进和争取资源的力度可能不足","压力下倾向内耗，容易承接过多他人任务","面对变化与硬指标时需要更强的目标牵引"],
+     interview:["请举一个你明确拒绝他人请求或提出反对意见的例子，过程是什么样的？","有没有一次你主动推动一件没人牵头的事？结果如何？","当你的工作量已经超载，又有人来求助，你最近一次是怎么处理的？"],
+     probation:["是否能主动推进任务而非被动等待安排","面对压力和冲突时能否清晰表达边界","对硬性目标（数字、节点）的达成意识"],
+     manage:["明确目标与边界，主动帮Ta挡掉超载请求","用具体指标牵引，定期一对一了解真实压力","公开认可其贡献，鼓励表达不同意见"]}
+};
+const FORDER = ["D","H","P","Y"];
+
+/* =========================================================
+   岗位与匹配权重
+========================================================= */
+const JOBS = [
+  {id:"bd",  name:"销售 BD",        w:{D:.40,H:.30,Y:.20,P:.10}, focus:"推进力、客户共情、抗压沟通和成交意识"},
+  {id:"cre", name:"内容/IP/创意",    w:{H:.40,P:.30,D:.15,Y:.15}, focus:"想法质量、表达感染力、结构化输出和持续产能"},
+  {id:"ops", name:"运营/项目交付",   w:{Y:.35,P:.30,D:.20,H:.15}, focus:"协作、细节、节奏管理和跨方沟通"},
+  {id:"mgr", name:"管理岗/储备干部", w:{D:.35,P:.25,Y:.25,H:.15}, focus:"目标感、判断力、带人方式和风险意识"},
+  {id:"adm", name:"人事/财务/行政",  w:{Y:.40,P:.35,H:.15,D:.10}, focus:"稳定性、原则性、服务意识和细致程度"}
+];
+
+/* =========================================================
+   36道题：Part A 职场情境题 24 道 / Part B 行为偏好题 12 道
+   每题4个选项，f 为对应水果，选项顺序已打乱
+========================================================= */
+const QUESTIONS = [
+/* ---------- Part A 职场情境 ---------- */
+{part:"A", q:"项目临近截止，进度明显落后，你的第一反应是：", opts:[
+ {f:"P", t:"先冷静分析卡点到底在哪，再针对性调整计划"},
+ {f:"D", t:"立刻重排优先级、砍掉非核心部分，带头冲刺"},
+ {f:"Y", t:"逐个了解成员的困难，协调分工互相补位"},
+ {f:"H", t:"把大家召集起来打气，讲清意义，调动一切资源"}]},
+{part:"A", q:"接到一个目标模糊的新任务，你通常会：", opts:[
+ {f:"Y", t:"先和负责人确认期望和验收标准，对齐后稳步推进"},
+ {f:"P", t:"先查资料、拆解问题，列出一个完整框架再动手"},
+ {f:"H", t:"先找相关的人聊一圈，边聊边碰出方向和想法"},
+ {f:"D", t:"按自己的判断先定目标和时间点，边做边修正"}]},
+{part:"A", q:"会议上你的方案被当面质疑，你更可能：", opts:[
+ {f:"D", t:"当场正面回应，用结果和数据直接反驳"},
+ {f:"Y", t:"先理解对方的顾虑，看看有没有折中的空间"},
+ {f:"H", t:"换一种更生动的讲法，把方案重新讲一遍"},
+ {f:"P", t:"把质疑点记下来，会后补充论证再回复"}]},
+{part:"A", q:"客户突然提出一个不太合理的需求，你会：", opts:[
+ {f:"H", t:"先稳住关系和气氛，再慢慢把对方引导回来"},
+ {f:"D", t:"明确指出边界，直接给出可行的替代方案"},
+ {f:"P", t:"先分析这个需求背后的真实诉求是什么"},
+ {f:"Y", t:"耐心沟通，尽量配合，同时在内部协调资源"}]},
+{part:"A", q:"团队两位成员发生了正面冲突，你倾向于：", opts:[
+ {f:"Y", t:"私下分别安抚双方，慢慢搭桥修复关系"},
+ {f:"P", t:"分别了解事实经过，找出冲突的根本原因"},
+ {f:"D", t:"按规则和事实快速拍板，给出明确结论"},
+ {f:"H", t:"先把气氛缓和下来，拉着大家把话聊开"}]},
+{part:"A", q:"一个新项目启动，你最先做的事情是：", opts:[
+ {f:"D", t:"定清楚目标、里程碑和每个人的责任"},
+ {f:"P", t:"做风险评估和方案对比，先想清楚再开跑"},
+ {f:"H", t:"做一场亮眼的启动宣讲，把士气拉满"},
+ {f:"Y", t:"确认各方资源到位、配合方式谈妥"}]},
+{part:"A", q:"上级临时改变了项目方向，你会：", opts:[
+ {f:"P", t:"先问清楚改变的依据和对现有工作的影响"},
+ {f:"Y", t:"配合调整，同时安抚受影响的同事"},
+ {f:"D", t:"确认新目标后立即调整执行，不纠结沉没成本"},
+ {f:"H", t:"理解意图后，帮上级把新方向向团队讲明白"}]},
+{part:"A", q:"面对一段重复又繁琐的工作，你的做法是：", opts:[
+ {f:"Y", t:"踏实做完，保证质量稳定不出错"},
+ {f:"D", t:"想办法提效或自动化，把时间腾给更重要的事"},
+ {f:"P", t:"研究整个流程，优化出一套标准方法"},
+ {f:"H", t:"边做边找点乐子，或者拉同事一起做"}]},
+{part:"A", q:"需要向高层汇报一个坏消息，你会：", opts:[
+ {f:"P", t:"准备完整的数据和归因分析，有理有据地讲"},
+ {f:"D", t:"直说问题是什么，并同时给出解决方案"},
+ {f:"Y", t:"先和相关方对齐口径，再统一向上汇报"},
+ {f:"H", t:"讲清楚事情的来龙去脉，强调局面可控"}]},
+{part:"A", q:"同事请你帮忙，但你手头很忙，你通常：", opts:[
+ {f:"H", t:"基本会答应，顺便和对方聊聊近况"},
+ {f:"P", t:"先问清楚具体要做什么、需要多久，再决定"},
+ {f:"Y", t:"尽量挤时间帮忙，不太好意思拒绝"},
+ {f:"D", t:"按优先级判断，值得帮就快速帮完"}]},
+{part:"A", q:"公司要推行一个新工具/新流程，你的态度是：", opts:[
+ {f:"D", t:"只要对结果有效，立刻带头用起来"},
+ {f:"Y", t:"跟着团队节奏走，配合完成迁移"},
+ {f:"P", t:"先研究它是否真的比旧的好，再决定投入"},
+ {f:"H", t:"热情尝试新东西，还会把体验分享给大家"}]},
+{part:"A", q:"项目复盘会上，你最关注的通常是：", opts:[
+ {f:"H", t:"先肯定亮点，把大家的积极性调动起来"},
+ {f:"D", t:"结果和目标的差距，以及下一步行动"},
+ {f:"Y", t:"协作过程中的摩擦点和配合改进"},
+ {f:"P", t:"数据背后的关键变量和因果关系"}]},
+{part:"A", q:"接手一个问题很多的'烂摊子'项目，你会先：", opts:[
+ {f:"P", t:"全面盘点所有问题，排出修复的先后顺序"},
+ {f:"H", t:"重建信心，对内对外重新把故事讲好"},
+ {f:"Y", t:"先稳住团队成员的情绪，恢复基本配合"},
+ {f:"D", t:"快速止血，砍掉不必要的部分，保住核心"}]},
+{part:"A", q:"当你不同意团队多数人的决定时，你会：", opts:[
+ {f:"D", t:"坚持把观点讲透，据理力争"},
+ {f:"P", t:"用数据和逻辑摆出我的依据，让事实说话"},
+ {f:"H", t:"用比较轻松的方式抛出不同视角，引发讨论"},
+ {f:"Y", t:"保留个人意见，先配合团队执行"}]},
+{part:"A", q:"临时被叫去支援别人的项目救火，你会：", opts:[
+ {f:"Y", t:"先问负责人最需要我顶上哪一块"},
+ {f:"D", t:"直接上手，先解决最致命的问题"},
+ {f:"P", t:"先快速看一遍资料，搞清全貌再动手"},
+ {f:"H", t:"快速融入团队，把节奏和士气带起来"}]},
+{part:"A", q:"工作中最让你有成就感的时刻是：", opts:[
+ {f:"H", t:"作品或想法被认可、被广泛传播"},
+ {f:"Y", t:"团队配合顺畅，大家都信任和需要我"},
+ {f:"D", t:"目标达成、数字增长，结果说话"},
+ {f:"P", t:"把一个复杂的难题彻底想明白、解出来"}]},
+{part:"A", q:"安排一周的工作时，你倾向于：", opts:[
+ {f:"P", t:"列一张计划表，按逻辑顺序逐项推进"},
+ {f:"Y", t:"先看看别人需要我配合什么，再排自己的"},
+ {f:"H", t:"留出弹性空间，灵感和机会来了随时调整"},
+ {f:"D", t:"先排最重要、最硬的仗，其他见缝插针"}]},
+{part:"A", q:"任务信息不全的时候，你更可能：", opts:[
+ {f:"D", t:"按经验先干起来，路上再补"},
+ {f:"P", t:"把未知项列出来，逐一确认清楚再动"},
+ {f:"H", t:"找人聊，边聊边把信息补全"},
+ {f:"Y", t:"等关键信息齐了、确认无误再开始"}]},
+{part:"A", q:"带新人的时候，你的风格更接近：", opts:[
+ {f:"Y", t:"手把手陪跑，随时答疑，不让Ta掉队"},
+ {f:"H", t:"多鼓励多带飞，先把氛围和信心建立起来"},
+ {f:"D", t:"给目标给压力，让Ta在实战里快速上手"},
+ {f:"P", t:"给方法论和文档，把原理讲清楚"}]},
+{part:"A", q:"面对一个很强势的合作方，你会：", opts:[
+ {f:"P", t:"用事实、数据和条款说话，不被气场带走"},
+ {f:"D", t:"针锋相对，明确守住自己的底线"},
+ {f:"Y", t:"多倾听，找到双方都能接受的中间点"},
+ {f:"H", t:"先搞好关系、软化气氛，再谈正事"}]},
+{part:"A", q:"工作中出现重大失误，你的第一反应是：", opts:[
+ {f:"D", t:"立刻补救，承担责任，带着方案往前走"},
+ {f:"Y", t:"先向受影响的人道歉和安抚"},
+ {f:"P", t:"复盘根本原因，建立防止再犯的机制"},
+ {f:"H", t:"坦诚沟通事情经过，争取大家的理解"}]},
+{part:"A", q:"跨部门协作对方不配合时，你会：", opts:[
+ {f:"H", t:"私下先把关系处好，再回头推进事情"},
+ {f:"Y", t:"多沟通几轮，互相体谅，慢慢磨合"},
+ {f:"D", t:"升级到双方上级，尽快把事情解决"},
+ {f:"P", t:"把流程和责任边界白纸黑字明确下来"}]},
+{part:"A", q:"如果可以选，你更愿意接哪种任务：", opts:[
+ {f:"D", t:"有挑战、有明确产出和回报的硬仗"},
+ {f:"P", t:"有深度、需要钻研和专业积累的"},
+ {f:"H", t:"有曝光机会、有创意发挥空间的"},
+ {f:"Y", t:"能帮到别人、看得见价值的服务型工作"}]},
+{part:"A", q:"年底冲刺但资源有限，你的策略是：", opts:[
+ {f:"P", t:"重新测算投入产出，调整出最优组合"},
+ {f:"D", t:"聚焦回报最高的事，果断砍掉其他"},
+ {f:"Y", t:"协调好各方资源和人力，确保不掉链子"},
+ {f:"H", t:"把大家动员起来，再拼一把冲过去"}]},
+/* ---------- Part B 行为偏好 ---------- */
+{part:"B", q:"同事对你最常见的评价更接近：", opts:[
+ {f:"H", t:"有感染力、点子多"},
+ {f:"D", t:"有冲劲、敢拍板"},
+ {f:"Y", t:"好相处、靠得住"},
+ {f:"P", t:"想得深、严谨靠谱"}]},
+{part:"B", q:"开会时你更常扮演的角色是：", opts:[
+ {f:"D", t:"推动大家尽快得出结论的人"},
+ {f:"P", t:"补充数据和逻辑漏洞的人"},
+ {f:"H", t:"活跃气氛、不断抛想法的人"},
+ {f:"Y", t:"认真倾听、记录并跟进的人"}]},
+{part:"B", q:"你的电脑桌面/文件夹通常是：", opts:[
+ {f:"P", t:"分类清晰、结构分明，找东西很快"},
+ {f:"H", t:"比较随性丰富，经常换风格"},
+ {f:"D", t:"只留必要的东西，效率优先"},
+ {f:"Y", t:"保留大量记录和备忘，舍不得删"}]},
+{part:"B", q:"压力很大的时候，你通常：", opts:[
+ {f:"Y", t:"容易想很多，担心自己影响到别人"},
+ {f:"D", t:"反而更专注，火力全开把事干完"},
+ {f:"H", t:"找人倾诉，说出来就好多了"},
+ {f:"P", t:"需要独处梳理，想明白才睡得着"}]},
+{part:"B", q:"你做决定的方式更接近：", opts:[
+ {f:"D", t:"快，先干起来再说"},
+ {f:"Y", t:"倾向先听听大家的意见"},
+ {f:"P", t:"慢一点，要把利弊想清楚"},
+ {f:"H", t:"跟着感觉和直觉走，通常不差"}]},
+{part:"B", q:"周末临时要加班赶工，你的真实状态是：", opts:[
+ {f:"H", t:"嘴上会抱怨，但干起来挺热闹"},
+ {f:"Y", t:"会配合，不想因为自己拖累团队"},
+ {f:"D", t:"无所谓，把结果拿下最重要"},
+ {f:"P", t:"可以接受，但要知道为什么值得"}]},
+{part:"B", q:"你对规则和流程的态度是：", opts:[
+ {f:"Y", t:"倾向遵守，按规则来大家都省心"},
+ {f:"P", t:"规则要合理；合理我就会严格执行"},
+ {f:"H", t:"不太喜欢被框住，喜欢留有空间"},
+ {f:"D", t:"规则为结果服务，必要时可以打破"}]},
+{part:"B", q:"收到负面反馈时，你的反应更接近：", opts:[
+ {f:"D", t:"听重点，对的马上改，不内耗"},
+ {f:"P", t:"会反复琢磨这个反馈到底对不对"},
+ {f:"Y", t:"先反思是不是自己哪里做得不够好"},
+ {f:"H", t:"有点受挫，但很快就翻篇了"}]},
+{part:"B", q:"你的表达风格更接近：", opts:[
+ {f:"P", t:"严谨，层层展开，讲究依据"},
+ {f:"D", t:"直接，结论先行"},
+ {f:"H", t:"生动，有画面感和情绪"},
+ {f:"Y", t:"温和，比较照顾对方感受"}]},
+{part:"B", q:"团队聚餐时，你通常是：", opts:[
+ {f:"H", t:"活跃全场、带动话题的那个"},
+ {f:"Y", t:"照顾大家、点菜倒水的那个"},
+ {f:"P", t:"和身边人安静聊深度话题的那个"},
+ {f:"D", t:"张罗安排或拍板买单的那个"}]},
+{part:"B", q:"你更害怕哪种工作状态：", opts:[
+ {f:"P", t:"仓促上马、逻辑混乱地往前冲"},
+ {f:"Y", t:"气氛紧张、互相指责的团队"},
+ {f:"D", t:"没有目标、原地打转的日子"},
+ {f:"H", t:"沉闷重复、没人交流的环境"}]},
+{part:"B", q:"长期来看，你更想成为：", opts:[
+ {f:"D", t:"能扛事、能操盘业务的人"},
+ {f:"P", t:"某个领域里公认的专家"},
+ {f:"Y", t:"团队离不开的核心枢纽"},
+ {f:"H", t:"有个人风格和影响力的创意/IP型选手"}]}
+];
+
+/* =========================================================
+   计分
+========================================================= */
+function computeResult(answers){
+  const counts={D:0,H:0,P:0,Y:0};
+  answers.forEach((sel,i)=>{ counts[QUESTIONS[i].opts[sel].f]++ });
+  const sorted=FORDER.slice().sort((a,b)=>counts[b]-counts[a]);
+  const main=sorted[0], sub=sorted[1];
+  const pct={}; FORDER.forEach(f=>pct[f]=counts[f]/QUESTIONS.length);
+  const scores={};
+  JOBS.forEach(j=>{
+    let s=0, maxw=0;
+    FORDER.forEach(f=>{ s+=j.w[f]*pct[f]; maxw=Math.max(maxw,j.w[f]) });
+    scores[j.id]=Math.round(Math.min(100, s/maxw*100));
+  });
+  return {counts,pct,main,sub,scores};
+}
+function tier(score){
+  if(score>=75) return {label:"强推荐",  cls:"strong", note:"风格与岗位高度匹配，面试重点验证经历真实性与稳定性"};
+  if(score>=60) return {label:"推荐",    cls:"mid",    note:"风格基本匹配，面试需重点验证风险项"};
+  return            {label:"谨慎推荐", cls:"low",    note:"风格匹配度一般，需结合经验、技能与试岗表现综合判断"};
+}
+
+/* =========================================================
+   提交码（跨设备导入用）
+========================================================= */
+function encodeRec(rec){
+  const payload={n:rec.name,c:rec.contact,j:rec.job,t:rec.ts,a:rec.answers};
+  return "TF1-"+btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+}
+function decodeRec(code){
+  code=code.trim();
+  if(!code.startsWith("TF1-")) throw new Error("格式不正确");
+  const p=JSON.parse(decodeURIComponent(escape(atob(code.slice(4)))));
+  if(!Array.isArray(p.a)||p.a.length!==QUESTIONS.length) throw new Error("答案数据不完整");
+  return {id:"r"+Date.now()+Math.random().toString(36).slice(2,7), name:p.n||"未填写", contact:p.c||"", job:p.j||"", ts:p.t||Date.now(), answers:p.a};
+}
+
+/* =========================================================
+   工具
+========================================================= */
+const $=s=>document.querySelector(s);
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function fmtTime(ts){const d=new Date(ts);const p=n=>String(n).padStart(2,"0");return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove("show"),2200)}
+function jobName(id){const j=JOBS.find(j=>j.id===id);return j?j.name:(id||"未指定")}
+
+/* =========================================================
+   应用状态与视图
+========================================================= */
+const App = {
+  state:{view:"home", qi:0, answers:[], info:null, hrAuthed:false, search:"", jobFilter:"", reportId:null},
+
+  render(){
+    const v=this.state.view;
+    $("#app").innerHTML =
+      v==="home"   ? this.vHome() :
+      v==="quiz"   ? this.vQuiz() :
+      v==="done"   ? this.vDone() :
+      v==="hrlogin"? this.vHrLogin() :
+      v==="hr"     ? this.vHrList() :
+      v==="report" ? this.vReport() : "";
+    window.scrollTo(0,0);
+  },
+
+  /* ---------- 候选人首页 ---------- */
+  vHome(){
+    return `<div class="card">
+      <h1>工作风格测评</h1>
+      <p class="sub">共 ${QUESTIONS.length} 道题（24 道职场情境 + 12 道行为偏好），预计 8–12 分钟。没有对错之分，请按<b>第一反应</b>选择最接近你真实做法的选项。</p>
+      <div class="field" style="margin-top:22px"><label>姓名 *</label><input id="f-name" maxlength="30" placeholder="请输入真实姓名"></div>
+      <div class="field"><label>联系方式 *</label><input id="f-contact" maxlength="50" placeholder="手机号 / 微信 / 邮箱"></div>
+      <div class="field"><label>应聘岗位 *</label>
+        <select id="f-job">
+          <option value="">请选择应聘岗位</option>
+          ${JOBS.map(j=>`<option value="${j.id}">${j.name}</option>`).join("")}
+          <option value="other">其他 / 内部测试</option>
+        </select>
+      </div>
+      <button class="btn full" onclick="App.startQuiz()">开始测评</button>
+      <p class="hint" style="margin-top:14px">提交后页面会显示"已提交"，结果由公司内部统一查看，无需截图。</p>
+    </div>`;
+  },
+  startQuiz(){
+    const name=$("#f-name").value.trim(), contact=$("#f-contact").value.trim(), job=$("#f-job").value;
+    if(!name||!contact||!job){toast("请完整填写姓名、联系方式和应聘岗位");return}
+    this.state.info={name,contact,job};
+    this.state.answers=new Array(QUESTIONS.length).fill(null);
+    this.state.qi=0; this.state.view="quiz"; this.render();
+  },
+
+  /* ---------- 答题 ---------- */
+  vQuiz(){
+    const i=this.state.qi, q=QUESTIONS[i], total=QUESTIONS.length;
+    const done=this.state.answers.filter(a=>a!==null).length;
+    const sel=this.state.answers[i];
+    return `<div class="card">
+      <div class="qmeta"><span>第 ${i+1} / ${total} 题</span><span>${q.part==="A"?"职场情境":"行为偏好"}</span></div>
+      <div class="progress"><i style="width:${Math.round(done/total*100)}%"></i></div>
+      <span class="qtag">${q.part==="A"?"PART A · 情境题":"PART B · 偏好题"}</span>
+      <div class="qtext">${esc(q.q)}</div>
+      ${q.opts.map((o,oi)=>`<button class="opt ${sel===oi?"sel":""}" onclick="App.pick(${oi})">${esc(o.t)}</button>`).join("")}
+      <div class="qnav">
+        <button class="back" onclick="App.prevQ()" ${i===0?"disabled style='visibility:hidden'":""}>‹ 上一题</button>
+        ${i===total-1?`<button class="btn" onclick="App.submit()" ${sel===null?"disabled":""}>提交测评</button>`
+                     :`<button class="btn" onclick="App.nextQ()" ${sel===null?"disabled":""}>下一题 ›</button>`}
+      </div>
+    </div>`;
+  },
+  pick(oi){
+    const i=this.state.qi;
+    this.state.answers[i]=oi;
+    if(i<QUESTIONS.length-1){ this.state.qi++; this.render(); }
+    else this.render();
+  },
+  prevQ(){ if(this.state.qi>0){this.state.qi--;this.render()} },
+  nextQ(){ if(this.state.answers[this.state.qi]!==null && this.state.qi<QUESTIONS.length-1){this.state.qi++;this.render()} },
+
+  async submit(){
+    const idx=this.state.answers.findIndex(a=>a===null);
+    if(idx>=0){this.state.qi=idx;this.render();toast("还有题目未完成");return}
+    const rec={
+      id:"r"+Date.now()+Math.random().toString(36).slice(2,7),
+      name:this.state.info.name, contact:this.state.info.contact, job:this.state.info.job,
+      ts:Date.now(), answers:this.state.answers.slice()
+    };
+    this.state.lastCode=encodeRec(rec);
+    this.state.view="saving"; 
+    $("#app").innerHTML=`<div class="card donewrap"><h1 style="font-size:20px">正在提交…</h1><p class="sub">请稍候，不要关闭页面</p></div>`;
+    try{ await Cloud.add(rec); this.state.saveOk=true }
+    catch(e){ this.state.saveOk=false }
+    this.state.view="done"; this.render();
+  },
+
+  vDone(){
+    const ok=this.state.saveOk;
+    return `<div class="card donewrap">
+      <div class="donemark">✓</div>
+      <h1 style="font-size:22px">已提交</h1>
+      ${ok
+        ?`<p class="sub">感谢你完成本次测评。你的答案已保存，无需截图、无需其他操作。<br>后续安排请等待 HR 与你联系。</p>
+          <details class="codebox">
+            <summary>如 HR 另行索取提交码，请点此展开</summary>
+            <div class="codeval" id="codeval">${esc(this.state.lastCode||"")}</div>
+            <button class="btn ghost small" style="margin-top:8px" onclick="App.copyText(document.getElementById('codeval').textContent,'提交码已复制')">复制提交码</button>
+          </details>`
+        :`<p class="sub">你已完成全部题目，但当前网络环境下自动保存未成功。<br><b>请点击下方按钮复制提交码，发送给 HR 即可</b>，效果完全相同。</p>
+          <div class="codeval" id="codeval" style="margin-top:16px">${esc(this.state.lastCode||"")}</div>
+          <button class="btn small" style="margin-top:10px" onclick="App.copyText(document.getElementById('codeval').textContent,'提交码已复制，请发送给HR')">复制提交码</button>`}
+    </div>`;
+  },
+
+  /* ---------- HR 登录 ---------- */
+  gotoHR(){
+    if(this.state.hrAuthed){this.enterHR()}else{this.state.view="hrlogin";this.render()}
+  },
+  vHrLogin(){
+    return `<div class="card" style="max-width:440px;margin:0 auto">
+      <h2>内部入口</h2>
+      <p class="sub">仅限 HR、招聘负责人及管理层授权人员使用。账号由负责人在 Supabase Authentication 中创建。</p>
+      <div class="field"><label>邮箱</label><input id="hr-email" type="email" placeholder="HR / Admin 邮箱"></div>
+      <div class="field"><label>密码</label><input id="hr-pwd" type="password" placeholder="密码" onkeydown="if(event.key==='Enter')App.hrLogin()"></div>
+      <button class="btn full" onclick="App.hrLogin()">登录后台</button>
+      <button class="btn ghost full" style="margin-top:10px" onclick="App.state.view='home';App.render()">返回测评首页</button>
+    </div>`;
+  },
+  async hrLogin(){
+    const email=$("#hr-email").value.trim(), pwd=$("#hr-pwd").value;
+    if(!email||!pwd){toast("请输入邮箱和密码");return}
+    try{
+      await Cloud.login(email,pwd);
+      this.state.hrAuthed=true; this.enterHR();
+    }catch(e){ toast(e.message) }
+  },
+  async enterHR(){
+    this.state.view="hr";
+    $("#app").innerHTML=`<div class="card"><div class="empty">正在加载候选人数据…</div></div>`;
+    try{ await Cloud.loadAll(); }
+    catch(e){ toast(e.message); this.state.hrAuthed=false; this.state.view="hrlogin"; }
+    this.render();
+  },
+
+  /* ---------- HR 列表 ---------- */
+  vHrList(){
+    let list=Cloud.cache.map(r=>({...r, res:computeResult(r.answers)}));
+    const s=this.state.search.toLowerCase(), jf=this.state.jobFilter;
+    if(s) list=list.filter(r=>(r.name+r.contact).toLowerCase().includes(s));
+    if(jf) list=list.filter(r=>r.job===jf);
+    const rows=list.map(r=>{
+      const sc = r.res.scores[r.job] ?? Math.max(...Object.values(r.res.scores));
+      const t=tier(sc);
+      return `<tr>
+        <td><b>${esc(r.name)}</b><div style="font-size:12px;color:var(--ink-soft)">${esc(r.contact)}</div></td>
+        <td class="hidemobile">${esc(jobName(r.job))}</td>
+        <td><div class="stylecell"><span class="dot ${r.res.main}"></span>${FRUITS[r.res.main].name}</div>
+            <div style="font-size:12px;color:var(--ink-soft);padding-left:16px">副：${FRUITS[r.res.sub].name}</div></td>
+        <td style="font-weight:800;font-variant-numeric:tabular-nums">${sc}</td>
+        <td><span class="badge ${t.cls}">${t.label}</span></td>
+        <td class="hidemobile" style="font-size:12px;color:var(--ink-soft)">${fmtTime(r.ts)}</td>
+        <td style="white-space:nowrap"><button class="linkbtn" onclick="App.openReport('${r.id}')">查看报告</button>
+            <button class="linkbtn red" onclick="App.delRec('${r.id}')">删除</button></td>
+      </tr>`;
+    }).join("");
+    return `<div class="card">
+      <div class="hrbar">
+        <h2 style="margin:0">候选人列表 <span style="font-size:13px;color:var(--ink-soft);font-weight:600">共 ${list.length} 人</span></h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn ghost small" onclick="App.enterHR()">刷新</button>
+          <button class="btn ghost small" onclick="App.exportData()">导出数据</button>
+          <button class="btn ghost small" onclick="App.state.view='home';App.render()">返回测评页</button>
+        </div>
+      </div>
+      <div class="toolrow">
+        <input type="text" placeholder="搜索姓名 / 联系方式" value="${esc(this.state.search)}" oninput="App.state.search=this.value;App.render();const i=document.querySelector('.toolrow input');i.focus();i.setSelectionRange(i.value.length,i.value.length)">
+        <select onchange="App.state.jobFilter=this.value;App.render()">
+          <option value="">全部岗位</option>
+          ${JOBS.map(j=>`<option value="${j.id}" ${jf===j.id?"selected":""}>${j.name}</option>`).join("")}
+          <option value="other" ${jf==="other"?"selected":""}>其他 / 内部测试</option>
+        </select>
+      </div>
+      ${list.length?`<div style="overflow-x:auto"><table>
+        <thead><tr><th>候选人</th><th class="hidemobile">应聘岗位</th><th>主 / 副风格</th><th>匹配分</th><th>建议</th><th class="hidemobile">提交时间</th><th></th></tr></thead>
+        <tbody>${rows}</tbody></table></div>`
+      :`<div class="empty">暂无候选人记录。候选人通过本链接提交后会自动出现在这里，点"刷新"获取最新数据；<br>个别提交失败的候选人可用下方"提交码导入"补录。</div>`}
+    </div>
+    <div class="card">
+      <h2 style="font-size:15px">提交码导入（补录）</h2>
+      <p class="hint">候选人提交失败时页面会显示提交码（TF1- 开头），向其索取后粘贴到下方导入，会自动同步到云端。</p>
+      <div class="toolrow" style="margin-bottom:0">
+        <input type="text" id="imp-code" placeholder="粘贴 TF1- 开头的提交码">
+        <button class="btn small" onclick="App.importCode()">导入</button>
+      </div>
+      <p class="hint" style="margin-top:12px">所有提交保存在云端，HR 在任何设备打开本链接、输入密码即可查看。建议定期点"导出数据"做一份 JSON 备份。</p>
+    </div>`;
+  },
+  async importCode(){
+    const v=$("#imp-code").value.trim();
+    if(!v){toast("请先粘贴提交码");return}
+    try{
+      if(v.startsWith("[")||v.startsWith("{")){ // JSON 备份恢复
+        const arr=JSON.parse(v); const list=Array.isArray(arr)?arr:[arr];
+        let n=0;
+        for(const r of list){
+          if(r&&Array.isArray(r.answers)&&r.answers.length===QUESTIONS.length&&!Cloud.cache.some(x=>x.id===r.id)){
+            await Cloud.add(r); n++;
+          }
+        }
+        toast(`已恢复 ${n} 条记录`); this.render(); return;
+      }
+      const rec=decodeRec(v);
+      await Cloud.add(rec); toast("导入成功，已同步云端"); this.render();
+    }catch(e){ toast("导入失败："+e.message) }
+  },
+  exportData(){
+    const data=JSON.stringify(Cloud.cache);
+    this.copyText(data,"全部数据已复制到剪贴板，请粘贴保存为备份文件");
+  },
+  async delRec(id){
+    if(confirm("确定删除该候选人记录？此操作不可恢复。")){await Cloud.remove(id);this.render();toast("已删除")}
+  },
+
+  /* ---------- 报告 ---------- */
+  openReport(id){ this.state.reportId=id; this.state.view="report"; this.render(); },
+  vReport(){
+    const r=Cloud.cache.find(x=>x.id===this.state.reportId);
+    if(!r) return `<div class="card"><div class="empty">记录不存在</div></div>`;
+    const res=computeResult(r.answers);
+    const M=FRUITS[res.main], S=FRUITS[res.sub];
+    const appliedScore = res.scores[r.job] ?? null;
+    const t = appliedScore!==null ? tier(appliedScore) : null;
+    const distSeg = FORDER.map(f=>`<i style="width:${(res.pct[f]*100).toFixed(1)}%;background:${FRUITS[f].color}"></i>`).join("");
+    const distLeg = FORDER.map(f=>`<span><span class="dot ${f}" style="display:inline-block;vertical-align:middle;margin-right:4px"></span>${FRUITS[f].name} <b>${res.counts[f]}</b> 题 (${Math.round(res.pct[f]*100)}%)</span>`).join("");
+    const matchRows = JOBS.slice().sort((a,b)=>res.scores[b.id]-res.scores[a.id]).map(j=>`
+      <div class="matchrow ${j.id===r.job?"hl":""}">
+        <span class="nm">${j.name}</span>
+        <span class="bar"><i style="width:${res.scores[j.id]}%"></i></span>
+        <span class="sc">${res.scores[j.id]}</span>
+      </div>`).join("");
+    const appliedJob=JOBS.find(j=>j.id===r.job);
+    return `<div class="rpt-actions noprint">
+      <button class="btn ghost small" onclick="App.state.view='hr';App.render()">‹ 返回列表</button>
+      <button class="btn small" onclick="window.print()">打印 / 保存 PDF</button>
+      <button class="btn ghost small" onclick="App.copyReport('${r.id}')">复制报告文本</button>
+    </div>
+    <div class="card" id="rpt">
+      <div class="rpt-head">
+        <div>
+          <div style="font-size:11.5px;color:var(--ink-soft);font-weight:700;letter-spacing:.1em">内部报告 · 仅限授权人员查看</div>
+          <h1>候选人工作风格报告</h1>
+        </div>
+        <div style="text-align:right;font-size:12.5px;color:var(--ink-soft)">热带水果工作风格测评<br>${fmtTime(r.ts)}</div>
+      </div>
+      <div class="kv">
+        <div><div class="k">姓名</div><div class="v">${esc(r.name)}</div></div>
+        <div><div class="k">联系方式</div><div class="v">${esc(r.contact)}</div></div>
+        <div><div class="k">应聘岗位</div><div class="v">${esc(jobName(r.job))}</div></div>
+        ${t?`<div><div class="k">岗位匹配建议</div><div class="v"><span class="badge ${t.cls}">${t.label} · ${appliedScore} 分</span></div></div>`:""}
+      </div>
+
+      <div class="mainstyle ${res.main}">
+        <div class="fruiticon ${res.main}">${M.icon}</div>
+        <div>
+          <div style="font-weight:800;font-size:17px">主风格：${M.name} <span style="font-size:12px;color:var(--ink-soft);font-weight:600">${M.en} · ${M.tagline}</span></div>
+          <div style="font-size:13.5px;margin-top:3px">${M.desc}</div>
+          <div style="font-size:13px;margin-top:6px;color:var(--ink-soft)">副风格：<b style="color:var(--ink)">${S.name}</b>（${S.key}）—— 在主风格之外，候选人也表现出较明显的${S.key}倾向，可在协作与任务分配中加以利用。</div>
+        </div>
+      </div>
+
+      <div class="distbar">${distSeg}</div>
+      <div class="distlegend">${distLeg}</div>
+
+      <div class="rsec">
+        <h3>岗位匹配评分</h3>
+        <div class="matchgrid">${matchRows}</div>
+        ${appliedJob?`<p style="font-size:13px;color:var(--ink-soft);margin-top:10px">应聘岗位「${appliedJob.name}」核心关注：${appliedJob.focus}。${t.note}。</p>`:""}
+      </div>
+
+      <div class="rsec"><h3>优势</h3><ul>${M.strengths.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+      <div class="rsec"><h3>潜在风险（待面试验证）</h3><ul>${M.risks.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+      <div class="rsec"><h3>建议面试追问</h3><ul>${M.interview.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+      <div class="rsec"><h3>试用期观察点</h3><ul>${M.probation.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+      <div class="rsec"><h3>管理与协作建议</h3><ul>${M.manage.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+
+      <div class="notice">本报告为内部招聘辅助参考，不构成心理诊断，"强推荐 / 推荐 / 谨慎推荐"提示的是后续面试与试岗的验证重点，不是录用结论。请结合简历、作品、结构化面试与试岗表现综合判断。报告仅限内部使用，请勿直接发送给候选人。</div>
+    </div>`;
+  },
+
+  copyReport(id){
+    const r=Cloud.cache.find(x=>x.id===id); if(!r)return;
+    const res=computeResult(r.answers);
+    const M=FRUITS[res.main], S=FRUITS[res.sub];
+    const sc=res.scores[r.job]; const t=sc!==undefined&&JOBS.some(j=>j.id===r.job)?tier(sc):null;
+    const lines=[
+      `【候选人工作风格报告 · 内部使用】`,
+      `姓名：${r.name}　联系方式：${r.contact}　应聘岗位：${jobName(r.job)}　提交时间：${fmtTime(r.ts)}`,
+      `主风格：${M.name}（${M.tagline}）　副风格：${S.name}`,
+      `风格分布：${FORDER.map(f=>`${FRUITS[f].name}${Math.round(res.pct[f]*100)}%`).join(" / ")}`,
+      `岗位匹配：${JOBS.map(j=>`${j.name} ${res.scores[j.id]}分`).join("；")}`,
+      t?`应聘岗位匹配建议：${t.label}（${sc}分）——${t.note}`:"",
+      ``,`■ 优势`,...M.strengths.map(x=>`· ${x}`),
+      ``,`■ 潜在风险（待面试验证）`,...M.risks.map(x=>`· ${x}`),
+      ``,`■ 建议面试追问`,...M.interview.map((x,i)=>`${i+1}. ${x}`),
+      ``,`■ 试用期观察点`,...M.probation.map(x=>`· ${x}`),
+      ``,`■ 管理与协作建议`,...M.manage.map(x=>`· ${x}`),
+      ``,`说明：本报告为内部招聘辅助参考，不构成心理诊断，也不是录用结论，请结合面试与试岗综合判断。仅限内部使用。`
+    ].filter(x=>x!=="" || true);
+    this.copyText(lines.join("\n"),"报告文本已复制，可粘贴到内部文档或沟通群");
+  },
+
+  copyText(text,msg){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(()=>toast(msg)).catch(()=>this.copyFallback(text,msg));
+    }else this.copyFallback(text,msg);
+  },
+  copyFallback(text,msg){
+    const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);
+    ta.select();try{document.execCommand("copy");toast(msg)}catch(e){toast("复制失败，请手动选择复制")}
+    document.body.removeChild(ta);
+  }
+};
+App.render();
+</script>
+</body>
+</html>
