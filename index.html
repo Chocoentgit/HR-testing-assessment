@@ -714,8 +714,8 @@ const App = {
         <h2 style="margin:0">候选人列表 <span style="font-size:13px;color:var(--ink-soft);font-weight:600">共 ${list.length} 人</span></h2>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn ghost small" onclick="App.enterHR()">刷新</button>
-<button class="btn small" onclick="App.exportData()">导出 Excel</button>
-   <button class="btn ghost small" onclick="App.backupJSON()">备份(JSON)</button>
+          <button class="btn small" onclick="App.exportData()">导出 Excel</button>
+          <button class="btn ghost small" onclick="App.backupJSON()">备份(JSON)</button>
           <button class="btn ghost small" onclick="App.state.view='home';App.render()">返回测评页</button>
         </div>
       </div>
@@ -760,7 +760,7 @@ const App = {
       await Cloud.add(rec); toast("导入成功，已同步云端"); this.render();
     }catch(e){ toast("导入失败："+e.message) }
   },
-exportData(){
+  exportData(){
     const rows=Cloud.cache.map(r=>({...r,res:computeResult(r.answers)}));
     if(!rows.length){toast("暂无数据可导出");return}
     const head=["姓名","联系方式","应聘岗位","主风格","副风格",
@@ -784,7 +784,7 @@ exportData(){
       const s=String(c??"");
       return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;
     }).join(",")).join("\r\n");
-    const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+    const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}); // BOM 确保 Excel 中文不乱码
     const url=URL.createObjectURL(blob);
     const a=document.createElement("a");
     const d=new Date(); const p=n=>String(n).padStart(2,"0");
@@ -796,7 +796,6 @@ exportData(){
   backupJSON(){
     const data=JSON.stringify(Cloud.cache);
     this.copyText(data,"备份数据(JSON)已复制，可粘贴保存以便日后恢复");
-  },
   },
   async delRec(id){
     if(confirm("确定删除该候选人记录？此操作不可恢复。")){await Cloud.remove(id);this.render();toast("已删除")}
