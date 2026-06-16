@@ -714,7 +714,8 @@ const App = {
         <h2 style="margin:0">候选人列表 <span style="font-size:13px;color:var(--ink-soft);font-weight:600">共 ${list.length} 人</span></h2>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn ghost small" onclick="App.enterHR()">刷新</button>
-          <button class="btn ghost small" onclick="App.exportData()">导出数据</button>
+<button class="btn small" onclick="App.exportData()">导出 Excel</button>
+   <button class="btn ghost small" onclick="App.backupJSON()">备份(JSON)</button>
           <button class="btn ghost small" onclick="App.state.view='home';App.render()">返回测评页</button>
         </div>
       </div>
@@ -759,9 +760,43 @@ const App = {
       await Cloud.add(rec); toast("导入成功，已同步云端"); this.render();
     }catch(e){ toast("导入失败："+e.message) }
   },
-  exportData(){
+exportData(){
+    const rows=Cloud.cache.map(r=>({...r,res:computeResult(r.answers)}));
+    if(!rows.length){toast("暂无数据可导出");return}
+    const head=["姓名","联系方式","应聘岗位","主风格","副风格",
+      "榴莲%","火龙果%","百香果%","杨桃%",
+      "销售BD分","内容创意分","运营交付分","管理岗分","人事行政分",
+      "应聘岗位匹配分","推荐建议","提交时间"];
+    const lines=[head];
+    rows.forEach(r=>{
+      const res=r.res;
+      const sc=res.scores[r.job];
+      const t=(sc!==undefined&&JOBS.some(j=>j.id===r.job))?tier(sc):null;
+      lines.push([
+        r.name, r.contact, jobName(r.job),
+        FRUITS[res.main].name, FRUITS[res.sub].name,
+        Math.round(res.pct.D*100), Math.round(res.pct.H*100), Math.round(res.pct.P*100), Math.round(res.pct.Y*100),
+        res.scores.bd, res.scores.cre, res.scores.ops, res.scores.mgr, res.scores.adm,
+        t?sc:"", t?t.label:"未指定岗位", fmtTime(r.ts)
+      ]);
+    });
+    const csv=lines.map(row=>row.map(c=>{
+      const s=String(c??"");
+      return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;
+    }).join(",")).join("\r\n");
+    const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    const d=new Date(); const p=n=>String(n).padStart(2,"0");
+    a.href=url; a.download=`候选人测评数据_${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}.csv`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    toast("Excel 表格已开始下载");
+  },
+  backupJSON(){
     const data=JSON.stringify(Cloud.cache);
-    this.copyText(data,"全部数据已复制到剪贴板，请粘贴保存为备份文件");
+    this.copyText(data,"备份数据(JSON)已复制，可粘贴保存以便日后恢复");
+  },
   },
   async delRec(id){
     if(confirm("确定删除该候选人记录？此操作不可恢复。")){await Cloud.remove(id);this.render();toast("已删除")}
